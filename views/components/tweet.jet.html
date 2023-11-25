@@ -10,6 +10,7 @@
     hx-post="/tweet/{{item.ID}}/like"
     hx-trigger="click"
     hx-target='.tweet-item[data-id="{{item.ID}}"]'
+    hx-swap="outerHTML"
   >
     {{ if item.IsLiked }}
     <i class="text-pink-500 fa-solid fa-heart"></i>
@@ -19,4 +20,4 @@
     <span>{{item.Likes}}</span>
   </button>
 </div>
-{{end}} {{end}}
+{{end}} {{end}} {{ if isset(Item) }}{{ yield tweetItem(item=Item)}}{{end}}

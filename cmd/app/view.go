@@ -73,9 +73,10 @@ func createGlobalFunctions(engine *jet.Engine) {
 		return humanize.Time(date)
 	})
 
-	engine.AddFunc("GetContextValue", func(ctx interface{}) string {
-		ref := reflect.ValueOf(ctx)
+	engine.AddFunc("GetContextValue", func(key string, ctx interface{}) string {
+		ref := reflect.TypeOf(ctx)
 		log.Println("ctx", ctx, ref)
+		log.Println(key, ctx)
 		return "testing..."
 	})
 }
