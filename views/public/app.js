@@ -1,7 +1,9 @@
+import { AChart } from "./components/chart.js";
 import { Test } from "./components/test.js";
 
 const componentMap = {
   "app-test": Test,
+  "app-chart": AChart,
 };
 
 const componentKeys = Object.keys(componentMap);

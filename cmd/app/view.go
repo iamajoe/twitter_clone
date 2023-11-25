@@ -87,7 +87,7 @@ func initViewRoutes(app fiber.Router) {
 
 	// handle views
 	app.Get("/", handlers.HandleFeed)
-	app.Get("/bored", handlers.HandleBored)
+	app.Get("/metrics", handlers.HandleMetrics)
 
 	app.Post("/tweet/:id/like", handlers.HandleComponentTweetLike)
 
