@@ -2,10 +2,8 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"time"
 	"twitter_clone/config"
@@ -71,13 +69,6 @@ func createGlobalFunctions(engine *jet.Engine) {
 
 	engine.AddFunc("HumanizeFn", func(date time.Time) string {
 		return humanize.Time(date)
-	})
-
-	engine.AddFunc("GetContextValue", func(key string, ctx interface{}) string {
-		ref := reflect.TypeOf(ctx)
-		log.Println("ctx", ctx, ref)
-		log.Println(key, ctx)
-		return "testing..."
 	})
 }
 
