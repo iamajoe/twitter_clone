@@ -1,0 +1,12 @@
+<div>
+  <div>@{{item.Author.Username}} {{humanizeFn(item.CreatedAt)}}</div>
+  <div>{{item.Message}}</div>
+  <div>
+    {% if item.IsLiked %}
+    <i class="text-pink-500 fa-solid fa-heart"></i>
+    {% else %}
+    <i class="fa-regular fa-heart"></i>
+    {% endif %}
+    <span>{{item.Likes}}</span>
+  </div>
+</div>
