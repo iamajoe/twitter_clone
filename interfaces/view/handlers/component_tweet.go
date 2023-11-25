@@ -23,8 +23,6 @@ func HandleComponentTweetLike(c *fiber.Ctx) error {
 	}
 
 	return c.Render("components/tweet", fiber.Map{
-		"foo": map[string]interface{}{
-			"Item": tweet,
-		},
+		"Item": tweet,
 	})
 }
