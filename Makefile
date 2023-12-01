@@ -11,6 +11,7 @@ RESET  := $(shell tput -Txterm sgr0)
 all: help
 
 install: ## Install dependencies
+	@$(GOCMD) install github.com/a-h/templ/cmd/templ@latest
 	@$(GOCMD) get ./...
 	@$(GOCMD) mod vendor
 	@$(GOCMD) mod tidy
@@ -20,6 +21,8 @@ run: build ## Run application
 	@$(BINARY_PATH)
 
 build: ## Build application
+	@echo "building template files..."
+	@templ generate -path views/
 	@echo "building app..."
 	@npx tailwindcss -c ./views/tailwind.config.js -i ./views/app.css -o ./views/public/app.css
 	@$(GOCMD) build -o ${BINARY_PATH} ./cmd/app/

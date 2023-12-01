@@ -1,0 +1,47 @@
+package components
+
+import (
+  "strconv"
+  "github.com/dustin/go-humanize"
+  "github.com/gofiber/fiber/v2"
+  "twitter_clone/handlers"
+)
+
+func getTweetItem(data fiber.Map) handlers.Tweet {
+  res, ok := data["Item"]
+  if !ok {
+    return handlers.Tweet{}
+  }
+
+  return res.(handlers.Tweet)
+}
+
+templ Tweet(item handlers.Tweet) {
+  <div class="pt-3 pb-2 tweet-item" data-id={strconv.FormatInt(item.ID, 10)}>
+    <div class="text-indigo-500">
+      <a href="/{item.Author.Username}"><b>{"@"}{item.Author.Username}</b></a>
+      <span class="ml-2 text-gray-500">{humanize.Time(item.CreatedAt)}</span>
+    </div>
+    <div class="mt-2 mb-2">{item.Message}</div>
+    <button
+      type="button"
+      hx-post={"/tweet/" + strconv.FormatInt(item.ID, 10) + "/like"}
+      hx-trigger="click"
+      hx-target={".tweet-item[data-id=\"" + strconv.FormatInt(item.ID, 10) + "\"]"}
+      hx-swap="outerHTML"
+    >
+      <i
+      if item.IsLiked {
+        class="text-pink-500 fa-solid fa-heart"
+      } else {
+        class="fa-regular fa-heart"
+      }
+      />
+      <span class="ml">{strconv.Itoa(item.Likes)}</span>
+    </button>
+  </div>
+}
+
+templ TweetOnly(data fiber.Map) {
+  @Tweet(getTweetItem(data))
+}

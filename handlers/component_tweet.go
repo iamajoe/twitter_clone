@@ -22,7 +22,7 @@ func HandleComponentTweetLike(c *fiber.Ctx) error {
 		CreatedAt: time.Now().Add(-time.Minute * 10),
 	}
 
-	return c.Render("components/tweet", fiber.Map{
+	return c.Render("components/tweetOnly", fiber.Map{
 		"Item": tweet,
 	})
 }

@@ -16,7 +16,7 @@ func main() {
 		ErrorHandler:          handlers.ErrorHandler,
 		DisableStartupMessage: true,
 		PassLocalsToViews:     true,
-		Views:                 createViewEngine(),
+		Views:                 &TemplViewEngine{},
 	})
 
 	viewApp := app.Group("/")

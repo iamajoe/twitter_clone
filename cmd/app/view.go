@@ -1,84 +1,50 @@
 package main
 
 import (
-	"html/template"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
-	"twitter_clone/config"
+	"context"
+	"io"
 	"twitter_clone/handlers"
 
-	"github.com/dustin/go-humanize"
+	views_components "twitter_clone/views/components"
+	views_routes "twitter_clone/views/routes"
+	views_routes_feed "twitter_clone/views/routes/feed"
+
+	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template/jet/v2"
 )
 
-func cssStylesheet(name string) (res string) {
-	filepath.Walk("views/public", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
+type TemplViewEngine struct {
+	views map[string](func(data fiber.Map) templ.Component)
+}
 
-		if info.Name() == name {
-			p := strings.Replace(path, "views/", "", 1)
-			res = "<link rel=\"stylesheet\" href=\"/" + p + "\">"
-		}
+func (e *TemplViewEngine) Load() error {
+	e.views = make(map[string]func(data fiber.Map) templ.Component)
 
+	// add your route components here
+	e.views["routes/feed/index"] = views_routes_feed.Route
+	e.views["routes/metrics"] = views_routes.RouteMetrics
+	e.views["components/tweetOnly"] = views_components.TweetOnly
+
+	return nil
+}
+
+func (e *TemplViewEngine) Render(w io.Writer, tmpl string, data interface{}, args ...string) error {
+	template, ok := e.views[tmpl]
+	if !ok {
+		// TODO: should render a 500
+		w.Write([]byte("500: template not found"))
 		return nil
-	})
+	}
 
-	return res
-}
-
-func jsScript(name string) (res string) {
-	filepath.Walk("views/public", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.Name() == name {
-			p := strings.Replace(path, "views/", "", 1)
-			res = "<script type=\"module\" src=\"/" + p + "\" defer></script>"
-		}
-
+	dataMap, ok := data.(fiber.Map)
+	if !ok {
+		// TODO: should render a 500
+		w.Write([]byte("500: data not fiber.Map"))
 		return nil
-	})
+	}
 
-	return res
-}
-
-func createGlobalFunctions(engine *jet.Engine) {
-	engine.AddFunc("css", func(name string) (res template.HTML) {
-		sheet := cssStylesheet(name)
-		if len(sheet) > 0 {
-			res = template.HTML(sheet)
-		}
-
-		return
-	})
-
-	engine.AddFunc("js", func(name string) (res template.HTML) {
-		script := jsScript(name)
-		if len(script) > 0 {
-			res = template.HTML(script)
-		}
-
-		return
-	})
-
-	engine.AddFunc("HumanizeFn", func(date time.Time) string {
-		return humanize.Time(date)
-	})
-}
-
-func createViewEngine() fiber.Views {
-	engine := jet.New("./views", ".jet.html")
-
-	engine.Reload(config.Get().Env != "production")
-	createGlobalFunctions(engine)
-
-	return engine
+	// render the template
+	return template(dataMap).Render(context.Background(), w)
 }
 
 func initViewRoutes(app fiber.Router) {

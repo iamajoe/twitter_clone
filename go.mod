@@ -3,6 +3,7 @@ module twitter_clone
 go 1.21.3
 
 require (
+	github.com/a-h/templ v0.2.476
 	github.com/dustin/go-humanize v1.0.1
 	github.com/gofiber/fiber/v2 v2.51.0
 	github.com/gofiber/template/jet/v2 v2.1.6
