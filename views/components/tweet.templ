@@ -30,11 +30,11 @@ templ Tweet(item handlers.Tweet) {
       hx-target={".tweet-item[data-id=\"" + strconv.FormatInt(item.ID, 10) + "\"]"}
       hx-swap="outerHTML"
     >
-      <i
-      if item.IsLiked {
-        class="text-pink-500 fa-solid fa-heart"
-      } else {
-        class="fa-regular fa-heart"
+      <i class={
+        "fa-heart",
+        templ.KV("text-pink-500", item.IsLiked),
+        templ.KV("fa-solid", item.IsLiked),
+        templ.KV("fa-regular", !item.IsLiked),
       }
       />
       <span class="ml">{strconv.Itoa(item.Likes)}</span>
