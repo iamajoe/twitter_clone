@@ -39,6 +39,7 @@ vet: ## Vets the project
 	$(GOCMD) vet -v
 
 lint: ## Lints the project
+	templ fmt views/
 	golines -w -l .
 	goimports -w -l .
 	gofumpt -l -w .

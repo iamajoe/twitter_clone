@@ -1,15 +1,15 @@
 package layouts
 
 import (
-  "github.com/gofiber/fiber/v2"
-  "twitter_clone/views/components"
+	"github.com/gofiber/fiber/v2"
+	"twitter_clone/views/components"
 )
 
 templ defaultLayout(contents templ.Component, data fiber.Map) {
-    @components.Header(data)
-    @contents
+	@components.Header(data)
+	@contents
 }
 
 templ Default(contents templ.Component, data fiber.Map) {
-  @Base(defaultLayout(contents, data), data)
+	@Base(defaultLayout(contents, data), data)
 }

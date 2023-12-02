@@ -1,23 +1,23 @@
 package views_routes
 
 import (
-  "github.com/gofiber/fiber/v2"
-  "twitter_clone/views/layouts"
+	"github.com/gofiber/fiber/v2"
+	"twitter_clone/views/layouts"
 )
 
 func getGraphData(data fiber.Map) string {
-  res, ok := data["GraphData"]
-  if !ok {
-    return ""
-  }
+	res, ok := data["GraphData"]
+	if !ok {
+		return ""
+	}
 
-  return res.(string)
+	return res.(string)
 }
 
 templ containerMetrics(data fiber.Map) {
-  <div><app-chart data={getGraphData(data)} /></div>
+	<div><app-chart data={ getGraphData(data) }></app-chart></div>
 }
 
 templ RouteMetrics(data fiber.Map) {
-  @layouts.Default(containerMetrics(data), data)
+	@layouts.Default(containerMetrics(data), data)
 }

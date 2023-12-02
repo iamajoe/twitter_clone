@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+
 	"twitter_clone/config"
 	"twitter_clone/handlers"
 

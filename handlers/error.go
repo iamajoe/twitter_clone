@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+
 	"twitter_clone/config"
 
 	"github.com/gofiber/fiber/v2"
